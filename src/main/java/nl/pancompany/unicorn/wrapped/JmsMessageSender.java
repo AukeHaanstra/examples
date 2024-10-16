@@ -2,11 +2,11 @@ package nl.pancompany.unicorn.wrapped;
 
 import jakarta.jms.*;
 
-public class JmsSender implements LetterSender.MessageSender {
+public class JmsMessageSender implements LetterSender.MessageSender {
 
     private final ConnectionFactory connectionFactory;
 
-    public JmsSender(ConnectionFactory connectionFactory) {
+    public JmsMessageSender(ConnectionFactory connectionFactory) {
         this.connectionFactory = connectionFactory;
     }
 

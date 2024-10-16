@@ -3,7 +3,7 @@ package nl.pancompany.unicorn.wrapped;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class MessageService {
+public class LetterSender {
 
     interface MessageSender {
         void sendMessage(String destination, String message) throws SendingFailedException;

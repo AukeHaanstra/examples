@@ -1,21 +1,21 @@
 package nl.pancompany.unicorn.wrapped;
 
-import nl.pancompany.unicorn.wrapped.MessageService.MessageSender.SendingFailedException;
+import nl.pancompany.unicorn.wrapped.LetterSender.MessageSender.SendingFailedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import static org.mockito.Mockito.mock;
 
-class MessageSenderTest {
+class LetterSenderTest {
 
-    MessageService messageService;
-    MessageService.MessageSender messageSender;
+    LetterSender letterSender;
+    LetterSender.MessageSender messageSender;
 
     @BeforeEach
     public void setUp() {
-        messageSender = mock(MessageService.MessageSender.class);
-        messageService = new MessageService(messageSender);
+        messageSender = mock(LetterSender.MessageSender.class);
+        letterSender = new LetterSender(messageSender);
     }
 
     @Test
@@ -24,7 +24,7 @@ class MessageSenderTest {
         String message = "message";
         String expectedMessage = "message\nWe take no responsibilities";
 
-        messageService.sendMessage(destination, message);
+        letterSender.sendMessage(destination, message);
 
         Mockito.verify(messageSender).sendMessage(destination, expectedMessage);
     }
