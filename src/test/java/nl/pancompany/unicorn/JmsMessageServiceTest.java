@@ -9,6 +9,7 @@ import static org.mockito.Mockito.*;
 
 class JmsMessageServiceTest {
 
+    JmsMessageService jmsMessageService;
     ConnectionFactory connectionFactory;
     Connection connection;
     Session session;
@@ -19,6 +20,7 @@ class JmsMessageServiceTest {
     @BeforeEach
     public void setUp() {
         connectionFactory = Mockito.mock(ConnectionFactory.class);
+        jmsMessageService = new JmsMessageService(connectionFactory);
         connection = mock(Connection.class);
         session = mock(Session.class);
         messageProducer = mock(MessageProducer.class);
@@ -27,16 +29,18 @@ class JmsMessageServiceTest {
     }
 
     @Test
-    public void test() throws JMSException {
+    public void sendsMessage() throws JMSException {
         String destination = "destination";
         String message = "message";
+        String expectedMessage = "message\nWe take no responsibilities";
         when(connectionFactory.createConnection()).thenReturn(connection);
         when(connection.createSession(false, Session.AUTO_ACKNOWLEDGE)).thenReturn(session);
         when(session.createQueue(destination)).thenReturn(queue);
         when(session.createProducer(queue)).thenReturn(messageProducer);
-        when(session.createTextMessage(message)).thenReturn(textMessage);
 
-        new JmsMessageService(connectionFactory).sendMessage("destination", "message");
+        when(session.createTextMessage(expectedMessage)).thenReturn(textMessage);
+
+        jmsMessageService.sendMessage(destination, message);
 
         Mockito.verify(messageProducer).send(textMessage);
     }

@@ -1,12 +1,6 @@
 package nl.pancompany.unicorn;
 
-import jakarta.jms.Connection;
-import jakarta.jms.ConnectionFactory;
-import jakarta.jms.JMSException;
-import jakarta.jms.MessageProducer;
-import jakarta.jms.Queue;
-import jakarta.jms.Session;
-import jakarta.jms.TextMessage;
+import jakarta.jms.*;
 
 public class JmsMessageService {
 
@@ -26,12 +20,16 @@ public class JmsMessageService {
             session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             Queue queue = session.createQueue(destination);
             producer = session.createProducer(queue);
-            TextMessage textMessage = session.createTextMessage(message);
+            TextMessage textMessage = session.createTextMessage(addFooter(message));
             producer.send(textMessage);
         } finally {
             if (producer != null) producer.close();
             if (session != null) session.close();
             if (connection != null) connection.close();
         }
+    }
+
+    private String addFooter(String message) {
+        return message + "\nWe take no responsibilities";
     }
 }
