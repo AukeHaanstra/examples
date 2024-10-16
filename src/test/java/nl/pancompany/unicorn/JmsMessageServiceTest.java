@@ -3,7 +3,6 @@ package nl.pancompany.unicorn;
 import jakarta.jms.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import static org.mockito.Mockito.*;
 
@@ -19,7 +18,7 @@ class JmsMessageServiceTest {
 
     @BeforeEach
     public void setUp() {
-        connectionFactory = Mockito.mock(ConnectionFactory.class);
+        connectionFactory = mock(ConnectionFactory.class);
         jmsMessageService = new JmsMessageService(connectionFactory);
         connection = mock(Connection.class);
         session = mock(Session.class);
@@ -30,9 +29,9 @@ class JmsMessageServiceTest {
 
     @Test
     public void sendsMessage() throws JMSException {
-        String destination = "destination";
-        String message = "message";
-        String expectedMessage = "message\nWe take no responsibilities";
+        var destination = "destination";
+        var message = "message";
+        var expectedMessage = "message\nWe take no responsibilities";
         when(connectionFactory.createConnection()).thenReturn(connection);
         when(connection.createSession(false, Session.AUTO_ACKNOWLEDGE)).thenReturn(session);
         when(session.createQueue(destination)).thenReturn(queue);
@@ -42,6 +41,6 @@ class JmsMessageServiceTest {
 
         jmsMessageService.sendMessage(destination, message);
 
-        Mockito.verify(messageProducer).send(textMessage);
+        verify(messageProducer).send(textMessage);
     }
 }
